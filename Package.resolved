@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "gordonkirschutils",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/fantasia-y/GordonKirschUtils.git",
-      "state" : {
-        "revision" : "9907b4ca395c036295b33c0b4a4af484a8195466",
-        "version" : "1.0.4"
-      }
-    },
-    {
       "identity" : "jwtdecode.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/auth0/JWTDecode.swift",

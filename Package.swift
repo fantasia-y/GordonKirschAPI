@@ -13,7 +13,6 @@ let package = Package(
             targets: ["GordonKirschAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/fantasia-y/GordonKirschUtils.git", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/auth0/JWTDecode.swift", .upToNextMajor(from: "3.1.0")),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", .upToNextMajor(from: "20.0.0")),
     ],
@@ -23,7 +22,6 @@ let package = Package(
         .target(
             name: "GordonKirschAPI",
             dependencies: [
-                .product(name: "GordonKirschUtils", package: "GordonKirschUtils"),
                 .product(name: "JWTDecode", package: "JWTDecode.swift"),
                 .product(name: "KeychainSwift", package: "keychain-swift")
             ]),
