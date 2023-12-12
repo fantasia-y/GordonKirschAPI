@@ -6,7 +6,7 @@
 
 import Foundation
 
-class Errors {
+public class Errors {
     //internal
     static let ERR_SERIALIZING_REQUEST = "error_serializing_request"
     static let ERR_CONVERTING_TO_HTTP_RESPONSE = "error_converting_response_to_http_response"
@@ -36,7 +36,7 @@ class Errors {
     }
 }
 
-struct LoginResponse: Decodable {
+public struct LoginResponse: Decodable {
     var accessToken: String
     var refreshToken: String
     var refreshTokenExpiration: Int
@@ -48,7 +48,7 @@ struct LoginResponse: Decodable {
     }
 }
 
-struct ErrorResponse: Codable {
+public struct ErrorResponse: Codable {
     let code: Int
     let message: String
     
@@ -57,23 +57,23 @@ struct ErrorResponse: Codable {
     }
 }
 
-struct EmptyResponse: Codable {}
+public struct EmptyResponse: Codable {}
 
-enum ApiResult<T> {
+public enum ApiResult<T> {
     case success(_ response: T)
     case serverError(_ err: ErrorResponse)
     case authError(_ err: ErrorResponse)
     case networkError(_ err: String)
 }
 
-enum RequestMethod: String {
+public enum RequestMethod: String {
     case get = "GET"
     case post = "POST"
     case delete = "DELETE"
     case put = "PUT"
 }
 
-class API {
+public class API {
     private static var url: String {
         return Bundle.main.infoDictionary?["API_URL"] as! String
     }
