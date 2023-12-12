@@ -1,6 +1,6 @@
 //
 //  Token.swift
-//  
+//
 //
 //  Created by Gordon on 12.12.23.
 //
@@ -8,9 +8,9 @@
 import Foundation
 import JWTDecode
 
-struct Token {
-    let token: String
-    let expiresAt: Int
+public struct Token {
+    public let token: String
+    public let expiresAt: Int
     
     init(token: String) {
         self.token = token

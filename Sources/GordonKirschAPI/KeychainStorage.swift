@@ -8,25 +8,25 @@
 import Foundation
 import KeychainSwift
 
-class KeychainStorage {
-    static let shared = KeychainStorage()
+public class KeychainStorage {
+    public static let shared = KeychainStorage()
     private let keychain = KeychainSwift()
     
-    func saveToken(response: LoginResponse) {
+    public func saveToken(response: LoginResponse) {
         keychain.set(response.accessToken, forKey: "accessToken")
         keychain.set(response.refreshToken, forKey: "refreshToken")
     }
     
-    func clearTokens() {
+    public func clearTokens() {
         keychain.delete("accessToken")
         keychain.delete("refreshToken")
     }
     
-    func getAccessToken() -> Token {
+    public func getAccessToken() -> Token {
         return Token(token: keychain.get("accessToken") ?? "")
     }
     
-    func getRefreshToken() -> Token {
+    public func getRefreshToken() -> Token {
         return Token(token: keychain.get("refreshToken") ?? "", expiresAt: 0)
     }
 }
