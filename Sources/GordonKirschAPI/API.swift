@@ -8,21 +8,21 @@ import Foundation
 
 public class Errors {
     //internal
-    static let ERR_SERIALIZING_REQUEST = "error_serializing_request"
-    static let ERR_CONVERTING_TO_HTTP_RESPONSE = "error_converting_response_to_http_response"
-    static let ERR_PARSE_RESPONSE = "error_parsing_response"
-    static let ERR_NIL_BODY = "error_nil_body"
-    static let ERR_PARSE_ERROR_RESPONSE = "error_parsing_error_response"
+    public static let ERR_SERIALIZING_REQUEST = "error_serializing_request"
+    public static let ERR_CONVERTING_TO_HTTP_RESPONSE = "error_converting_response_to_http_response"
+    public static let ERR_PARSE_RESPONSE = "error_parsing_response"
+    public static let ERR_NIL_BODY = "error_nil_body"
+    public static let ERR_PARSE_ERROR_RESPONSE = "error_parsing_error_response"
     
     //server
-    static let ERR_WRONG_CREDENTIALS = "Invalid credentials."
-    static let ERR_MISSING_AUTH_HEADER = "JWT Token not found"
-    static let ERR_INVALID_ACCESS_TOKEN = "Invalid JWT Token"
-    static let ERR_ACCESS_TOKEN_EXPIRED = "Expired JWT Token"
-    static let ERR_INVALID_REFRESH_TOKEN = "JWT Refresh Token Not Found"
-    static let ERR_REFRESH_TOKEN_EXPIRED = "Invalid JWT Refresh Token"
+    public static let ERR_WRONG_CREDENTIALS = "Invalid credentials."
+    public static let ERR_MISSING_AUTH_HEADER = "JWT Token not found"
+    public static let ERR_INVALID_ACCESS_TOKEN = "Invalid JWT Token"
+    public static let ERR_ACCESS_TOKEN_EXPIRED = "Expired JWT Token"
+    public static let ERR_INVALID_REFRESH_TOKEN = "JWT Refresh Token Not Found"
+    public static let ERR_REFRESH_TOKEN_EXPIRED = "Invalid JWT Refresh Token"
     
-    static func messageFor(err: String) -> String {
+    public static func messageFor(err: String) -> String {
         switch err {
         case ERR_WRONG_CREDENTIALS:
             return "Entered wrong login or password"
@@ -31,7 +31,7 @@ public class Errors {
         }
     }
     
-    static func isAuthError(err: String) -> Bool {
+    public static func isAuthError(err: String) -> Bool {
         return [ERR_MISSING_AUTH_HEADER, ERR_INVALID_ACCESS_TOKEN, ERR_INVALID_REFRESH_TOKEN, ERR_ACCESS_TOKEN_EXPIRED, ERR_REFRESH_TOKEN_EXPIRED].contains(where: { $0 == err })
     }
 }
@@ -49,10 +49,10 @@ public struct LoginResponse: Decodable {
 }
 
 public struct ErrorResponse: Codable {
-    let code: Int
-    let message: String
+    public let code: Int
+    public let message: String
     
-    func isAuth() -> Bool {
+    public func isAuth() -> Bool {
         return Errors.isAuthError(err: message) || code == 403
     }
 }
