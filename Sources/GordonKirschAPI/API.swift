@@ -78,7 +78,7 @@ public class API {
         return Bundle.main.infoDictionary?["API_URL"] as! String
     }
     
-    static let shared = API(url)
+    public static let shared = API(url)
     
     private let baseUrl: String
     private let ACCESS_TOKEN_THRESHOLD_SECONDS = 10
@@ -185,14 +185,14 @@ public class API {
         }
     }
     
-    func login(email: String, password: String) async -> ApiResult<LoginResponse> {
+    public func login(email: String, password: String) async -> ApiResult<LoginResponse> {
         let request = formRequest(path: "/login", data: ["email": email, "password": password], ignoreJwtAuth: true)
         let response = await doRequest(request: request, decode: LoginResponse.self)
         handleAuthResponse(response: response)
         return response
     }
     
-    func login(fromURL url: URL) -> ApiResult<LoginResponse> {
+    public func login(fromURL url: URL) -> ApiResult<LoginResponse> {
         do {
             let params = url.extractParams()
             
@@ -213,21 +213,21 @@ public class API {
         }
     }
     
-    func login(withIDToken token: String, fromProvider provider: String) async -> ApiResult<LoginResponse> {
+    public func login(withIDToken token: String, fromProvider provider: String) async -> ApiResult<LoginResponse> {
         let request = formRequest(path: "/connect/token", data: ["provider": provider, "token": token], ignoreJwtAuth: true)
         let response = await doRequest(request: request, decode: LoginResponse.self)
         handleAuthResponse(response: response)
         return response
     }
     
-    func register(email: String, password: String) async -> ApiResult<LoginResponse> {
+    public func register(email: String, password: String) async -> ApiResult<LoginResponse> {
         let request = formRequest(path: "/register", data: ["email": email, "password": password], ignoreJwtAuth: true)
         let response = await doRequest(request: request, decode: LoginResponse.self)
         handleAuthResponse(response: response)
         return response
     }
     
-    func logout() async {
+    public func logout() async {
         // TODO invalidate refresh token on server
         
         accessToken = Token(token: "", expiresAt: 0)
@@ -235,7 +235,7 @@ public class API {
         KeychainStorage.shared.clearTokens()
     }
     
-    func generateConnectUrl(forProvider provider: String, redirectTo: String) -> URL {
+    public func generateConnectUrl(forProvider provider: String, redirectTo: String) -> URL {
         return append(parameters: ["provider": provider, "redirect_to": redirectTo], toUrl: getFullUrl(forPath: "/connect"))
     }
     
