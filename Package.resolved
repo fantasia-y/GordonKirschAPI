@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "gordonkirschutils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fantasia-y/GordonKirschUtils.git",
+      "state" : {
+        "revision" : "9907b4ca395c036295b33c0b4a4af484a8195466",
+        "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "jwtdecode.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/auth0/JWTDecode.swift",
+      "state" : {
+        "revision" : "58af7278797871e460d79496621b3e5366b865b2",
+        "version" : "3.1.0"
+      }
+    },
+    {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift.git",
+      "state" : {
+        "revision" : "d108a1fa6189e661f91560548ef48651ed8d93b9",
+        "version" : "20.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}
