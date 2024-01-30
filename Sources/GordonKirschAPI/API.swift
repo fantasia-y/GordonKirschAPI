@@ -88,6 +88,7 @@ public class API {
     public var networkStatus: NetworkStatus = .online
     
     private let monitor = NWPathMonitor()
+    private let queue = DispatchQueue(label: "NetworkMonitor")
     private let baseUrl: String
     private let ACCESS_TOKEN_THRESHOLD_SECONDS = 10
     private var accessToken = KeychainStorage.shared.getAccessToken()
@@ -107,8 +108,6 @@ public class API {
                 print("Network is offline")
             }
         }
-        
-        let queue = DispatchQueue(label: "NetworkMonitor")
         monitor.start(queue: queue)
     }
     
