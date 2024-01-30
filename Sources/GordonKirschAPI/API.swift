@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Network
 
 public class Errors {
     //internal
@@ -73,13 +74,20 @@ public enum RequestMethod: String {
     case put = "PUT"
 }
 
+public enum NetworkStatus {
+    case online
+    case offline
+}
+
 public class API {
     private static var url: String {
         return Bundle.main.infoDictionary?["API_URL"] as! String
     }
     
     public static let shared = API(url)
+    public var networkStatus: NetworkStatus = .online
     
+    private let monitor = NWPathMonitor()
     private let baseUrl: String
     private let ACCESS_TOKEN_THRESHOLD_SECONDS = 10
     private var accessToken = KeychainStorage.shared.getAccessToken()
@@ -87,6 +95,21 @@ public class API {
     
     init(_ baseUrl: String) {
         self.baseUrl = baseUrl
+        
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let self else { return }
+            
+            if path.status == .satisfied {
+                networkStatus = .online
+                print("Network is online")
+            } else {
+                networkStatus = .offline
+                print("Network is offline")
+            }
+        }
+        
+        let queue = DispatchQueue(label: "NetworkMonitor")
+        monitor.start(queue: queue)
     }
     
     public func getBaseUrl() -> String {
@@ -132,13 +155,13 @@ public class API {
         // create request
         var request = URLRequest(
             url: url,
-            cachePolicy: .reloadIgnoringLocalCacheData
+            cachePolicy: networkStatus == .online ? .reloadIgnoringLocalCacheData : .returnCacheDataDontLoad
         )
         
         // simulator add xdebug cookie
         #if targetEnvironment(simulator)
         if let cookie = HTTPCookie(properties: [
-            .domain: "localhost",
+            .domain: baseUrl,
             .path: "/",
             .name: "XDEBUG_SESSION",
             .value: "PHPSTORM"
