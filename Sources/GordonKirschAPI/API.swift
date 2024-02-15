@@ -226,7 +226,8 @@ public class API {
                 throw URLError(.badURL)
             }
             
-            let response = ApiResult.success(LoginResponse(accessToken: accessToken, refreshToken: refreshToken, refreshTokenExpiration: Int(refreshTokenExpiration)!))
+            let tokenExp = Int(refreshTokenExpiration) ?? Int(Date().timeIntervalSince1970) + 2592000
+            let response = ApiResult.success(LoginResponse(accessToken: accessToken, refreshToken: refreshToken, refreshTokenExpiration: tokenExp))
             handleAuthResponse(response: response)
             return response
         } catch {
