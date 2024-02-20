@@ -154,7 +154,7 @@ public class API {
         // create request
         var request = URLRequest(
             url: url,
-            cachePolicy: networkStatus == .online ? .reloadIgnoringLocalCacheData : .returnCacheDataDontLoad
+            cachePolicy: networkStatus == .online ? .reloadIgnoringLocalCacheData : .reloadIgnoringLocalCacheData
         )
         
         // simulator add xdebug cookie
