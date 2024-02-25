@@ -80,11 +80,6 @@ public enum NetworkStatus {
 }
 
 public class API {
-    private static var url: String {
-        return Bundle.main.infoDictionary?["API_URL"] as! String
-    }
-    
-    public static let shared = API(url)
     public var networkStatus: NetworkStatus = .online
     
     private let monitor = NWPathMonitor()
@@ -94,7 +89,7 @@ public class API {
     private var accessToken = KeychainStorage.shared.getAccessToken()
     private var refreshToken = KeychainStorage.shared.getRefreshToken()
     
-    init(_ baseUrl: String) {
+    public init(_ baseUrl: String) {
         self.baseUrl = baseUrl
         
         monitor.pathUpdateHandler = { [weak self] path in
