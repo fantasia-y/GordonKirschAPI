@@ -15,6 +15,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/auth0/JWTDecode.swift", .upToNextMajor(from: "3.1.0")),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", .upToNextMajor(from: "20.0.0")),
+        .package(url: "https://github.com/ashleymills/Reachability.swift", branch: "master"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -23,7 +24,8 @@ let package = Package(
             name: "GordonKirschAPI",
             dependencies: [
                 .product(name: "JWTDecode", package: "JWTDecode.swift"),
-                .product(name: "KeychainSwift", package: "keychain-swift")
+                .product(name: "KeychainSwift", package: "keychain-swift"),
+                .product(name: "Reachability", package: "Reachability.swift")
             ]),
     ]
 )

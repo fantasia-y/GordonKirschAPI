@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import Network
+import Reachability
 
 public class Errors {
     //internal
@@ -81,9 +81,8 @@ public enum NetworkStatus {
 
 public class API {
     public var networkStatus: NetworkStatus = .online
-    
-    private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "NetworkMonitor")
+    private let reachability: Reachability
+
     private let baseUrl: String
     private let ACCESS_TOKEN_THRESHOLD_SECONDS = 10
     private var accessToken = KeychainStorage.shared.getAccessToken()
@@ -91,19 +90,26 @@ public class API {
     
     public init(_ baseUrl: String) {
         self.baseUrl = baseUrl
+        self.reachability = try! Reachability()
         
-        monitor.pathUpdateHandler = { [weak self] path in
-            guard let self else { return }
-            
-            if path.status == .satisfied {
-                networkStatus = .online
-                print("Network is online")
-            } else {
-                networkStatus = .offline
-                print("Network is offline")
-            }
+        reachability.whenReachable = { _ in
+            self.networkStatus = .online
+            print("Network is online")
         }
-        monitor.start(queue: queue)
+        reachability.whenUnreachable = { _ in
+            self.networkStatus = .offline
+            print("Network is offline")
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+    
+    deinit {
+        reachability.stopNotifier()
     }
     
     public func getBaseUrl() -> String {
@@ -149,7 +155,7 @@ public class API {
         // create request
         var request = URLRequest(
             url: url,
-            cachePolicy: networkStatus == .online ? .reloadIgnoringLocalCacheData : .reloadIgnoringLocalCacheData
+            cachePolicy: networkStatus == .online ? .reloadIgnoringLocalCacheData : .returnCacheDataElseLoad
         )
         
         // simulator add xdebug cookie
