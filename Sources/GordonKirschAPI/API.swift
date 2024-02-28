@@ -183,7 +183,7 @@ public class API {
     }
     
     private func formRefreshTokensRequest() -> URLRequest {
-        return formRequest(path: "/token/refresh", refreshToken: true, ignoreJwtAuth: true)
+        return formRequest(path: "/auth/refresh", refreshToken: true, ignoreJwtAuth: true)
     }
     
     private func renewAuthHeader(request: URLRequest) -> URLRequest {
@@ -199,7 +199,7 @@ public class API {
     }
     
     public func login(email: String, password: String) async -> ApiResult<LoginResponse> {
-        let request = formRequest(path: "/login", data: ["email": email, "password": password], ignoreJwtAuth: true)
+        let request = formRequest(path: "/auth/login", data: ["email": email, "password": password], ignoreJwtAuth: true)
         let response = await doRequest(request: request, decode: LoginResponse.self)
         handleAuthResponse(response: response)
         return response
@@ -235,7 +235,7 @@ public class API {
     }
     
     public func register(email: String, password: String) async -> ApiResult<LoginResponse> {
-        let request = formRequest(path: "/register", data: ["email": email, "password": password], ignoreJwtAuth: true)
+        let request = formRequest(path: "/auth/register", data: ["email": email, "password": password], ignoreJwtAuth: true)
         let response = await doRequest(request: request, decode: LoginResponse.self)
         handleAuthResponse(response: response)
         return response
