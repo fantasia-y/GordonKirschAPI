@@ -16,21 +16,12 @@ public class Errors {
     public static let ERR_PARSE_ERROR_RESPONSE = "error_parsing_error_response"
     
     //server
-    public static let ERR_WRONG_CREDENTIALS = "Invalid credentials."
+    public static let ERR_WRONG_CREDENTIALS = "Invalid credentials"
     public static let ERR_MISSING_AUTH_HEADER = "JWT Token not found"
     public static let ERR_INVALID_ACCESS_TOKEN = "Invalid JWT Token"
     public static let ERR_ACCESS_TOKEN_EXPIRED = "Expired JWT Token"
     public static let ERR_INVALID_REFRESH_TOKEN = "JWT Refresh Token Not Found"
     public static let ERR_REFRESH_TOKEN_EXPIRED = "Invalid JWT Refresh Token"
-    
-    public static func messageFor(err: String) -> String {
-        switch err {
-        case ERR_WRONG_CREDENTIALS:
-            return "Entered wrong login or password"
-        default:
-            return "An error has occured. Please check your internet connection and try again."
-        }
-    }
     
     public static func isAuthError(err: String) -> Bool {
         return [ERR_MISSING_AUTH_HEADER, ERR_INVALID_ACCESS_TOKEN, ERR_INVALID_REFRESH_TOKEN, ERR_ACCESS_TOKEN_EXPIRED, ERR_REFRESH_TOKEN_EXPIRED].contains(where: { $0 == err })
@@ -50,11 +41,10 @@ public struct LoginResponse: Decodable {
 }
 
 public struct ErrorResponse: Codable {
-    public let code: Int
     public let message: String
     
     public func isAuth() -> Bool {
-        return Errors.isAuthError(err: message) || code == 403
+        return Errors.isAuthError(err: message)
     }
 }
 
@@ -233,7 +223,7 @@ public class API {
             return response
         } catch {
             print(error)
-            return ApiResult.serverError(ErrorResponse(code: 0, message: "Temp"))
+            return ApiResult.serverError(ErrorResponse(message: "Temp"))
         }
     }
     
@@ -325,7 +315,7 @@ public class API {
             let (data, response) = try await URLSession.shared.data(for: refreshRequest)
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                return .authError(ErrorResponse(code: 0, message: Errors.ERR_CONVERTING_TO_HTTP_RESPONSE))
+                return .authError(ErrorResponse(message: Errors.ERR_CONVERTING_TO_HTTP_RESPONSE))
             }
             
             if httpResponse.isSuccessful() {
@@ -337,14 +327,14 @@ public class API {
                     let newRequest = renewAuthHeader(request: request)
                     return await doRequest(request: newRequest, decode: decode)
                 } catch {
-                    return .authError(ErrorResponse(code: 0, message: Errors.ERR_PARSE_RESPONSE))
+                    return .authError(ErrorResponse(message: Errors.ERR_PARSE_RESPONSE))
                 }
             } else {
                 do {
                     let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                     return .authError(errorResponse)
                 } catch {
-                    return .authError(ErrorResponse(code: 0, message: error.localizedDescription))
+                    return .authError(ErrorResponse(message: error.localizedDescription))
                 }
             }
         } catch {
@@ -395,7 +385,7 @@ public class API {
                 return .serverError(errorResponse)
             }
         } catch {
-            return .serverError(ErrorResponse(code: 0, message: Errors.ERR_PARSE_ERROR_RESPONSE))
+            return .serverError(ErrorResponse(message: Errors.ERR_PARSE_ERROR_RESPONSE))
         }
     }
 }
